@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- preference settings -->
     <string-array name="updateDistance">
         <item name="1">1 mile</item>
         <item name="2">2 miles</item>
@@ -16,6 +17,7 @@
         <item name="5">5</item>
     </string-array>
     
+    <!-- preference settings -->
     <string-array name="selectedCategoriesDefaultEntries">
         <item name="all">All</item>
         <item name="food">Food</item>
@@ -39,5 +41,19 @@
         <item name="electronics">6</item>
         <item name="footwear">7</item>
         <item name="academic">8</item>
+    </string-array>
+    
+    
+    <!-- post new form -->
+    <string-array name="categoryItems">
+        <item name="food">Food</item>
+        <item name="Cosmetics">Cosmetics</item>
+        <item name="clothes">Clothes</item>
+        <item name="stationery">Stationery</item>
+        <item name="groceries">Groceries</item>
+        <item name="movies">Movies</item>
+        <item name="electronics">Electronics</item>
+        <item name="footwear">Footwear</item>
+        <item name="academic">Academic</item>
     </string-array>
 </resources>

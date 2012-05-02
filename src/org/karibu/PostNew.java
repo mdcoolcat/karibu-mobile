@@ -13,24 +13,34 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class PostNew extends Activity {
+
 	private EditText overview, details;
 	private String myOverview, myDetails;
-	private DatePicker begin, end;
+	private DatePicker start, end;
 	private String newStart, newEnd;
 	private Button postBtn;
+	private Spinner spinner;
+	private int myCate;
 	
 	private int year, month, day;
-	private TextView debug1, debug2;
+//	private TextView debug1, debug2;
 
 	static final int SUMMARY_DIALOG = 0;
 	static final int OVERVIEW_MISSING_DIALOG = 1;
@@ -45,15 +55,16 @@ public class PostNew extends Activity {
 		setContentView(R.layout.post_form);
 		setCurrentDateOnView();
 		addListenerOnButton();
+		
 	}
 	
 	private void setCurrentDateOnView() {	//system date	
 		overview = (EditText) findViewById(R.id.post_overview);
 		details = (EditText) findViewById(R.id.post_details);
 		
-		debug1 = (TextView) findViewById(R.id.begindate);
-		debug2 = (TextView) findViewById(R.id.enddate);
-		begin = (DatePicker) findViewById(R.id.post_begindate);
+//		debug1 = (TextView) findViewById(R.id.begindate);
+//		debug2 = (TextView) findViewById(R.id.enddate);
+		start = (DatePicker) findViewById(R.id.post_begindate);
 		end = (DatePicker) findViewById(R.id.post_enddate);
  
 		final Calendar c = Calendar.getInstance();
@@ -62,17 +73,40 @@ public class PostNew extends Activity {
 		day = c.get(Calendar.DAY_OF_MONTH);
 		
 		// set current date into datepicker
-		begin.init(year, month, day, null);
+		start.init(year, month, day, null);
 		end.init(year, month, day, null);
- 
+		
+		//spinner
+		spinner = (Spinner) findViewById(R.id.post_spinner);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categoryItems, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
 	}
 
+	//for spinner
+	private class MyOnItemSelectedListener implements OnItemSelectedListener {
+
+		public void onItemSelected(AdapterView<?> parent, View view, int pos,
+				long id) {
+			Toast.makeText(parent.getContext(), "choose" + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
+			myCate = pos;
+		}
+
+		public void onNothingSelected(AdapterView<?> parent) {
+			// do nothing
+			
+		}
+		
+	}
+	
+	
 	private void addListenerOnButton() {
 		postBtn = (Button) findViewById(R.id.post_button);
 		postBtn.setOnClickListener(new View.OnClickListener() {
  
 			public void onClick(View v) {
-				newStart = new StringBuilder().append(begin.getMonth() + 1).append("-").append(begin.getDayOfMonth()).append("-").append(begin.getYear()).toString();
+				newStart = new StringBuilder().append(start.getMonth() + 1).append("-").append(start.getDayOfMonth()).append("-").append(start.getYear()).toString();
 //				debug1.setText(newStart);
 				newEnd = new StringBuilder().append(end.getMonth() + 1).append("-").append(end.getDayOfMonth()).append("-").append(end.getYear()).toString();
 //				debug2.setText(newEnd);
@@ -97,14 +131,15 @@ public class PostNew extends Activity {
 		AlertDialog dialog;
 		switch (id) {
 		case SUMMARY_DIALOG:
+			String[] cateItems = getResources().getStringArray(R.array.categoryItems);
 			builder.setTitle("Summary");
-			builder.setMessage("Overview:\n" + myOverview + "\n" + "Details:\n" + myDetails + 
-					"\nStart On: " + newStart  + "\nExpired On: " + newEnd + "\nLocation: ");
+			builder.setMessage("Overview:\n" + myOverview + "\n\nDetails:\n" + myDetails + "\n\nCategory: " + cateItems[myCate] + 
+					"\n\nStart On: " + newStart  + "\n\nExpired On: " + newEnd + "\n\nLocation: ");
 			builder.setPositiveButton("Confirm and Post", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     //send to server
                 	
-                	String resp = postNew(url + "?overview=" + myOverview.replace(" ", "%20") + "&details=" + myDetails.replace(" ", "%20") + "?start_date=" + newStart + "?end_date=" + newEnd);
+                	String resp = postNew(url + "?overview=" + myOverview.replace(" ", "%20") + "&details=" + myDetails.replace(" ", "%20") + "&category=" + myCate + "?start_date=" + newStart + "?end_date=" + newEnd);
                 	if (resp == null) {
                 		dialog.dismiss();
                 		Toast.makeText(getBaseContext(), "Post Successfully!", Toast.LENGTH_SHORT).show();
@@ -173,4 +208,58 @@ public class PostNew extends Activity {
 		}
 		return null;
 	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		myOverview = savedInstanceState.getString("myOverview");
+		myDetails = savedInstanceState.getString("myDetails");
+		int startDate[] = savedInstanceState.getIntArray("startDate");
+		int endDate[] = savedInstanceState.getIntArray("endDate");
+		start.updateDate(startDate[0], startDate[1], startDate[2]);
+		end.updateDate(endDate[0], endDate[1], endDate[2]);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putString("myOverview", myOverview);
+		outState.putString("myDetails", myDetails);
+		outState.putIntArray("startDate", new int[] {start.getYear(), start.getMonth(), start.getDayOfMonth()});
+		outState.putIntArray("endDate", new int[] {end.getYear(), end.getMonth(), end.getDayOfMonth()});
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(android.view.Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater blowUp = getMenuInflater();
+		blowUp.inflate(R.menu.our_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()) {
+		case R.id.main_list:	//back to main list
+			Intent intent3 = new Intent(PostNew.this, KaribuActivity.class);
+			startActivity(intent3);
+			break;
+		case R.id.post:
+			break;
+		case R.id.preferences:
+			Intent intent2 = new Intent(PostNew.this, Prefs.class);
+			startActivity(intent2);
+			break;
+		case R.id.cur_loc:
+			Intent intent4 = new Intent(PostNew.this, DetailsActivity.class);
+			startActivity(intent4);
+			break;
+		case R.id.aboutUs:
+			Intent intent1 = new Intent(PostNew.this, AboutUs.class);
+			startActivity(intent1);
+			break;
+		}
+		return false;
+	}
+
 }

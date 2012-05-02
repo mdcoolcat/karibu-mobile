@@ -9,8 +9,15 @@ package org.karibu;
 
 public final class R {
     public static final class array {
+        /**  post new form 
+         */
+        public static final int categoryItems=0x7f050004;
+        /**  preference settings 
+         */
         public static final int selectedCategoriesDefaultEntries=0x7f050002;
         public static final int selectedCategoriesDefaultValues=0x7f050003;
+        /**  preference settings 
+         */
         public static final int updateDistance=0x7f050000;
         public static final int updateDistanceValues=0x7f050001;
     }
@@ -86,29 +93,31 @@ containing a value of this type.
         public static final int _details=0x7f080007;
         public static final int _overview=0x7f080005;
         public static final int aboutDescription=0x7f080000;
-        public static final int aboutUs=0x7f08001b;
+        public static final int aboutUs=0x7f08001d;
         public static final int announcer=0x7f080004;
-        public static final int begindate=0x7f080013;
+        public static final int begindate=0x7f080015;
         public static final int category=0x7f080001;
         public static final int content=0x7f08000a;
-        public static final int cur_loc=0x7f08001a;
+        public static final int cur_loc=0x7f08001c;
         public static final int details=0x7f080008;
-        public static final int enddate=0x7f080015;
+        public static final int enddate=0x7f080017;
         public static final int gallery=0x7f08000b;
         public static final int hello_text=0x7f080009;
         public static final int img=0x7f08000c;
-        public static final int main_list=0x7f080017;
+        public static final int main_list=0x7f080019;
         public static final int mapView=0x7f080003;
         public static final int msg_num=0x7f080002;
         public static final int overview=0x7f080006;
-        public static final int post=0x7f080018;
-        public static final int post_begindate=0x7f080014;
+        public static final int post=0x7f08001a;
+        public static final int post_begindate=0x7f080016;
         public static final int post_button=0x7f08000e;
         public static final int post_details=0x7f080012;
-        public static final int post_enddate=0x7f080016;
+        public static final int post_enddate=0x7f080018;
         public static final int post_overview=0x7f080011;
-        public static final int preferences=0x7f080019;
+        public static final int post_spinner=0x7f080014;
+        public static final int preferences=0x7f08001b;
         public static final int street=0x7f08000d;
+        public static final int textview_categoriy=0x7f080013;
         public static final int textview_details=0x7f08000f;
         public static final int textview_overview=0x7f080010;
     }

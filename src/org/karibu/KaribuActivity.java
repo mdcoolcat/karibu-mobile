@@ -8,10 +8,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.karibu.model.Announcement;
 import org.karibu.model.Announcer;
@@ -23,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -37,12 +36,10 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -51,8 +48,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
@@ -77,10 +72,12 @@ public class KaribuActivity extends ListActivity implements LocationListener {
 	
 	// private int categoryNum;
 	/* Array of Category Strings to display in our list of Categories */
-	private String[] items = { "Food", "Cosmetics", "Clothes", "Stationery",
-			"Groceries", "Movies", "Electronics", "Footwear", "Academic",
-			"Nature" };
-	private List<Announcement>[] announceInCategory = new ArrayList[items.length];
+//	private Resources res = getResources();
+	private String[] items; 
+//	private String[] items = { "Food", "Cosmetics", "Clothes", "Stationery",
+//			"Groceries", "Movies", "Electronics", "Footwear", "Academic",
+//			"Nature" };
+	private List<Announcement>[] announceInCategory;
 	// each element is a list of corresponding announcements
 
 	/* Fields for Location Listener */
@@ -98,6 +95,8 @@ public class KaribuActivity extends ListActivity implements LocationListener {
 		// Configure the look of elements in the view.
 		configureView();
 
+		items = getResources().getStringArray(R.array.categoryItems);
+		announceInCategory = new ArrayList[items.length];
 		// Get the input stream from the URL and read it.
 //		Reader reader = new InputStreamReader(KaribuApplication.getData(url));
 

@@ -11,6 +11,7 @@
 	
 		<Button
 		    android:id="@+id/post_button"
+		    android:layout_marginTop="3dp"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
@@ -24,7 +25,7 @@
 	        android:text="Overview" 
 	        android:textAppearance="?android:attr/textAppearanceLarge" 
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/post_button"/>
+	        android:layout_below="@id/post_button"/>
 	
 	    <EditText
 	        android:id="@+id/post_overview"
@@ -33,7 +34,7 @@
 	        android:scrollbars="vertical" 
 	        android:text="" 
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/textview_overview"/>
+	        android:layout_below="@id/textview_overview"/>
 	
 	    <TextView
 	        android:id="@+id/textview_details"
@@ -42,26 +43,44 @@
 	        android:text="Details"
 	        android:textAppearance="?android:attr/textAppearanceLarge"
 	        android:layout_alignParentLeft="true" 
-	        android:layout_below="@+id/post_overview"/>
+	        android:layout_below="@id/post_overview"/>
 	
 	    <EditText
 	        android:id="@+id/post_details"
 	        android:layout_width="match_parent"
-	        android:layout_height="40dp"
-	        android:inputType="textMultiLine" 
-	        android:minLines="3"
-	        android:text=""
+	        android:layout_height="80dp"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/textview_details" />
+	        android:layout_below="@+id/textview_details"
+	        android:inputType="textMultiLine"
+	        android:minLines="3"
+	        android:text="" />
+	    
+	    <TextView
+	        android:id="@+id/textview_categoriy"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Category" 
+	        android:textAppearance="?android:attr/textAppearanceLarge" 
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/post_details"/>
+	    
+	    <Spinner 
+	        android:id="@+id/post_spinner"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:entries="@array/selectedCategoriesDefaultEntries"
+	        android:prompt="@string/cate_prompt"
+	        android:layout_below="@id/textview_categoriy"/>
+	        />
 	    
 		<TextView
 		    android:id="@+id/begindate"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Start Date" 
+	        android:text="Begin Date" 
 	        android:textAppearance="?android:attr/textAppearanceLarge" 
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/post_details" />
+	        android:layout_below="@id/post_spinner" />
 	
 		<DatePicker
 		    android:id="@+id/post_begindate"
@@ -74,7 +93,7 @@
 		    android:id="@+id/enddate"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="End Date"
+		    android:text="Expired Date"
 		    android:textAppearance="?android:attr/textAppearanceLarge" 
 		    android:layout_alignParentLeft="true"
 		    android:layout_below="@+id/post_begindate"/>
@@ -85,6 +104,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content" 
 		    android:layout_alignParentLeft="true"
-		    android:layout_below="@+id/enddate"/> 
+		    android:layout_below="@+id/enddate"/>
+ 
 	</RelativeLayout>
 </ScrollView>
