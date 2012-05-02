@@ -199,9 +199,6 @@ public class DetailsActivity extends MapActivity implements LocationListener {
 			Intent intent1 = new Intent(DetailsActivity.this, AboutUs.class);
 			startActivity(intent1);
 			break;
-		case R.id.exit:
-			finish();
-			break;
 		}
 		return false;
 	}

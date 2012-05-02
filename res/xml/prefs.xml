@@ -11,7 +11,7 @@
         <CheckBoxPreference 
             android:key="enable_msg"
             android:summary="Enable or disable all messages updates"
-            android:title="Enalbe Messages" 
+            android:title="Enable Messages" 
             android:defaultValue="true"
         />
         <org.karibu.ListPreferenceMultiSelect 

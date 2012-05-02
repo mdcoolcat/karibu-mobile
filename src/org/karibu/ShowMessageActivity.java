@@ -107,9 +107,6 @@ public class ShowMessageActivity extends ListActivity {
 			Intent intent1 = new Intent(ShowMessageActivity.this, AboutUs.class);
 			startActivity(intent1);
 			break;
-		case R.id.exit:
-			finish();
-			break;
 		}
 		return false;
 	}

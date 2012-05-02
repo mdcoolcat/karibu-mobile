@@ -94,7 +94,6 @@ containing a value of this type.
         public static final int cur_loc=0x7f08001a;
         public static final int details=0x7f080008;
         public static final int enddate=0x7f080015;
-        public static final int exit=0x7f08001c;
         public static final int gallery=0x7f08000b;
         public static final int hello_text=0x7f080009;
         public static final int img=0x7f08000c;
@@ -127,6 +126,7 @@ containing a value of this type.
     }
     public static final class string {
         public static final int app_name=0x7f060001;
+        public static final int cate_prompt=0x7f060002;
         public static final int hello=0x7f060000;
     }
     public static final class xml {

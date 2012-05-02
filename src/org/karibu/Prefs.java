@@ -24,7 +24,7 @@ public class Prefs extends PreferenceActivity implements OnSharedPreferenceChang
 	private String url = "https://tjjohnso2.wv.cc.cmu.edu:3000/announcements.json";
 	
 	private enum Keys {
-		ENABLE_MSG, ENABLE_CATES, DISTANCE, TIME_FROM, TIME_TO
+		enable_msg, enable_cates, distance, time_range_from, time_range_to
 	};
 	
 	@Override
@@ -44,27 +44,27 @@ public class Prefs extends PreferenceActivity implements OnSharedPreferenceChang
 		// TODO Auto-generated method stub
 		String field;
 		switch (Keys.valueOf(key)) {
-		case ENABLE_MSG:
+		case enable_msg:
 			if (prefs.getBoolean(key, true))
 				field = "1";
 			else
 				field = "0";
 			break;
-		case ENABLE_CATES:
+		case enable_cates:
 			String[] selected = ListPreferenceMultiSelect.parseStoredValue(prefs.getString("enable_cates", "#ALL#"));
 			StringBuilder s = new StringBuilder();
 			for (String cate : selected)
 				s.append(cate+"_");
 			field = s.toString();
 			break;
-		case DISTANCE:
+		case distance:
 			field = prefs.getString("distance", "3");
 			break;
-		case TIME_TO:
+		case time_range_from:
 			Toast.makeText(getBaseContext(), "time change", Toast.LENGTH_SHORT).show();
 			field = "";
 			break;
-		case TIME_FROM:
+		case time_range_to:
 			Toast.makeText(getBaseContext(), "time change", Toast.LENGTH_SHORT).show();
 		default:
 			field = "";
@@ -128,9 +128,6 @@ public class Prefs extends PreferenceActivity implements OnSharedPreferenceChang
 		case R.id.aboutUs:
 			Intent intent1 = new Intent(Prefs.this, AboutUs.class);
 			startActivity(intent1);
-			break;
-		case R.id.exit:
-			finish();
 			break;
 		}
 		return false;

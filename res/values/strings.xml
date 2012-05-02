@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, Karibu!</string>
     <string name="app_name">Karibu</string>
+    <string name="cate_prompt">Choose a category</string>
 
 </resources>
