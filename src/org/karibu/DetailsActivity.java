@@ -186,7 +186,7 @@ public class DetailsActivity extends MapActivity implements LocationListener {
 			startActivity(intent2);
 			break;
 		case R.id.post:
-			Intent intent3 = new Intent(DetailsActivity.this, PostNew.class);
+			Intent intent3 = new Intent(DetailsActivity.this, PostNewMain.class);
 			startActivity(intent3);
 			break;
 		case R.id.preferences:

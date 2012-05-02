@@ -92,7 +92,7 @@ public class ShowMessageActivity extends ListActivity {
 			startActivity(intent2);
 			break;
 		case R.id.post:
-			Intent intent3 = new Intent(ShowMessageActivity.this, PostNew.class);
+			Intent intent3 = new Intent(ShowMessageActivity.this, PostNewMain.class);
 			startActivity(intent3);
 			break;
 		case R.id.preferences:

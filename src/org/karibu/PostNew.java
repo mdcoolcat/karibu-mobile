@@ -12,9 +12,9 @@ import org.apache.http.util.EntityUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -27,10 +27,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
 
 public class PostNew extends Activity {
-
+//	private Bundle bundle;
+	
 	private EditText overview, details;
 	private String myOverview, myDetails;
 	private DatePicker start, end;
@@ -38,6 +41,7 @@ public class PostNew extends Activity {
 	private Button postBtn;
 	private Spinner spinner;
 	private int myCate;
+	private double announcementLat, announcementLng;
 	
 	private int year, month, day;
 //	private TextView debug1, debug2;
@@ -45,6 +49,8 @@ public class PostNew extends Activity {
 	static final int SUMMARY_DIALOG = 0;
 	static final int OVERVIEW_MISSING_DIALOG = 1;
 	static final int DETAILS_MISSING_DIALOG = 2;
+	static final int LOCATION_MISSING_DIALOG = 3;
+	
 	
 	private String url = "https://tjjohnso2.wv.cc.cmu.edu:3000/announcements.json";
 	
@@ -53,12 +59,14 @@ public class PostNew extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_form);
-		setCurrentDateOnView();
+//		bundle = this.getIntent().getExtras();
+		
+		setupView();
 		addListenerOnButton();
 		
 	}
 	
-	private void setCurrentDateOnView() {	//system date	
+	private void setupView() {	//system date	
 		overview = (EditText) findViewById(R.id.post_overview);
 		details = (EditText) findViewById(R.id.post_details);
 		
@@ -82,6 +90,7 @@ public class PostNew extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+		
 	}
 
 	//for spinner
@@ -89,7 +98,6 @@ public class PostNew extends Activity {
 
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
-			Toast.makeText(parent.getContext(), "choose" + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
 			myCate = pos;
 		}
 
@@ -113,12 +121,17 @@ public class PostNew extends Activity {
 				
 				myOverview = overview.getText().toString();
 				myDetails = details.getText().toString();
+				announcementLat = PostNewMain.locLat;
+				announcementLng = PostNewMain.locLng;
 				if (myOverview.trim().equals("")) 
 					showDialog(OVERVIEW_MISSING_DIALOG);
-					
+
+				else if (announcementLat == 0.0)	//no location input
+					showDialog(LOCATION_MISSING_DIALOG);
+				
 				else if (myDetails.trim().equals("")) 
 					showDialog(DETAILS_MISSING_DIALOG);
-
+				
 				else 
 					showDialog(SUMMARY_DIALOG);
 			}
@@ -133,13 +146,20 @@ public class PostNew extends Activity {
 		case SUMMARY_DIALOG:
 			String[] cateItems = getResources().getStringArray(R.array.categoryItems);
 			builder.setTitle("Summary");
-			builder.setMessage("Overview:\n" + myOverview + "\n\nDetails:\n" + myDetails + "\n\nCategory: " + cateItems[myCate] + 
-					"\n\nStart On: " + newStart  + "\n\nExpired On: " + newEnd + "\n\nLocation: ");
+			if (announcementLat == 0.0)
+				builder.setMessage("Overview:\n" + myOverview + "\n\nDetails:\n" + myDetails + "\n\nCategory: " + cateItems[myCate] + 
+						"\n\nStart On: " + newStart  + "\n\nExpired On: " + newEnd + "\n\nLocation: ");
+			else 
+				builder.setMessage("Overview:\n" + myOverview + "\n\nDetails:\n" + myDetails + "\n\nCategory: " + cateItems[myCate] + 
+						"\n\nStart On: " + newStart  + "\n\nExpired On: " + newEnd + 
+						"\n\nLocation: " + announcementLat + " " + announcementLng);
 			builder.setPositiveButton("Confirm and Post", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     //send to server
                 	
-                	String resp = postNew(url + "?overview=" + myOverview.replace(" ", "%20") + "&details=" + myDetails.replace(" ", "%20") + "&category=" + myCate + "?start_date=" + newStart + "?end_date=" + newEnd);
+                	String resp = postNew(url + "?overview=" + myOverview.replace(" ", "%20") + "&details=" + myDetails.replace(" ", "%20") +
+                			"&categories=" + myCate + "&start_date=" + newStart + "&end_date=" + newEnd +
+                			"&latitude=" + announcementLat + "&longitude=" + announcementLng);
                 	if (resp == null) {
                 		dialog.dismiss();
                 		Toast.makeText(getBaseContext(), "Post Successfully!", Toast.LENGTH_SHORT).show();
@@ -166,6 +186,28 @@ public class PostNew extends Activity {
 			});
 			dialog = builder.create();
 			break;
+		
+		case LOCATION_MISSING_DIALOG:
+			builder.setTitle("Missing Location");
+			builder.setMessage("You haven't input LOCATION. Please go to the Location tab and simply touch on the map for 1 second to choose the location!");
+			builder.setPositiveButton("OK, take me to the location tab", new DialogInterface.OnClickListener() {
+						
+						public void onClick(DialogInterface dialog, int which) {
+							//switch to location tab
+							PostNewMain parent;
+							parent = (PostNewMain) getParent();
+							parent.switchTab(1);
+						}
+					});
+					builder.setNegativeButton("I don't want to input location", new DialogInterface.OnClickListener() {
+						
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+			dialog = builder.create();
+			break;
+			
 		case DETAILS_MISSING_DIALOG:
 			builder.setTitle("Missing Details");
 			builder.setMessage("Why not add a few lines of DETAILS?");
@@ -185,6 +227,7 @@ public class PostNew extends Activity {
 			});
 			dialog = builder.create();
 			break;
+			
 		default:
 			dialog = null;
 		}

@@ -284,7 +284,7 @@ public class KaribuActivity extends ListActivity implements LocationListener {
 		case R.id.main_list:	//back to main list
 			break;
 		case R.id.post:
-			Intent intent3 = new Intent(KaribuActivity.this, PostNew.class);
+			Intent intent3 = new Intent(KaribuActivity.this, PostNewMain.class);
 			startActivity(intent3);
 			break;
 		case R.id.preferences:
