@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+     >
+
+    <com.google.android.maps.MapView
+        android:id="@+id/tabMap"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:apiKey="0vwbx-kAGEv3zxkJc2El60Yl1xshz2xRLm3jwgw"
+        android:clickable="true"
+        android:enabled="true" />
+
+
+    <TextView
+        android:id="@+id/debugInfo1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+        android:layout_below="@id/tabMap"
+        android:layout_marginTop="16dp"
+        android:text="debug1..." />
+
+    <TextView
+        android:id="@+id/debugInfo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+        android:layout_below="@id/debugInfo1"
+        android:layout_marginTop="18dp"
+        android:text="debug2..." />
+
+		<Button
+			    android:id="@+id/post_location_button"
+			    android:layout_marginTop="3dp"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+        		android:layout_below="@id/debugInfo2"
+			    android:text="User this location" />
+    
+</RelativeLayout>
